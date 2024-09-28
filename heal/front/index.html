@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="coffee">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="./styles.css">
+    <script src="/utils.js"></script>
+    <script src="./script.js" defer></script>
+    <title>Дневник здоровья</title>
+</head>
+<body>
+    <div id="app" class="flex gap-2 w-full h-[100dvh] p-4 flex-col">
+        <header class="flex">
+            <h1 class="text-3xl font-bold my-auto">
+                ДНЕВНИК ЗДОРОВЬЯ
+            </h1>
+            <button class="btn btn-primary ml-8" @click="onShowAddPost">НОВАЯ ЗАПИСЬ</button>
+            <button class="btn btn-outline ml-auto" @click="logout">ВЫХОД</button>
+        </header>
+        <main class="flex flex-grow mt-2 flex-wrap gap-4">
+            <div class="flex gap-4 flex-col w-full">
+                <h2 class="font-bold text-lg">Здравствуйте, {{userName}}! Ваши показания за последнее время ниже</h2>
+                <div class="tabs tabs-boxed" role="tablist">
+                    <button role="tab" :class="['tab', {'tab-active': isTable}]" @click="isTable = true">Таблица</button>
+                    <button role="tab" :class="['tab', {'tab-active': !isTable}]" @click="isTable = false">График</button>
+                </div>
+                <dialog id="my_modal_1" class="modal" ref="addPostModal">
+                    <div class="modal-box flex flex-col gap-4 w-[48rem] max-w-5xl">
+                        <h3 class="text-lg font-bold">Новая запись о здоровье</h3>
+                        <div class="grid gap-4">
+                            <label class="input input-bordered flex items-center gap-2">
+                                Уровень сахара в крови
+                                <input class="grow" placeholder="Введите число" type="number" id="blood_sugar" v-model="blood_sugar">
+                            </label>
+                            <label class="input input-bordered flex items-center gap-2">
+                                Вес
+                                <input class="grow" placeholder="Введите число" type="number" id="weight" v-model="weight">
+                            </label>
+                            <label class="input input-bordered flex items-center gap-2">
+                                Температура тела
+                                <input class="grow" placeholder="Введите число" type="number" id="temperature" v-model="temperature">
+                            </label>
+                            <label class="input input-bordered flex items-center gap-2">
+                                Пульс
+                                <input class="grow" placeholder="Введите число" type="number" id="pulse" v-model="pulse">
+                            </label>
+                            <label class="input input-bordered flex items-center gap-2">
+                                Артериальное давление
+                                <input class="grow" placeholder="Введите число" type="number" id="pressure" v-model="pressure">
+                            </label>
+                            <label class="input input-bordered flex items-center gap-2">
+                                Уровень кислорода в крови
+                                <input class="grow" placeholder="Введите число" type="number" id="oxygen_level" v-model="oxygen_level">
+                            </label>
+                            <label class="input input-bordered flex items-center gap-2">
+                                Уровень холестерина
+                                <input class="grow" placeholder="Введите число" type="number" id="cholesterol" v-model="cholesterol">
+                            </label>
+                            <label class="input input-bordered flex items-center gap-2 p-8">
+                                Общее самочувствие
+                                <div class="flex flex-col w-full gap-2">
+                                    <input type="range" min="0" max="9" class="range" v-model="overall_state"/>
+                                    <div class="flex w-full justify-between px-2 text-xs">
+                                        <span>1</span>
+                                        <span>2</span>
+                                        <span>3</span>
+                                        <span>4</span>
+                                        <span>5</span>
+                                        <span>6</span>
+                                        <span>7</span>
+                                        <span>8</span>
+                                        <span>9</span>
+                                        <span>10</span>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="modal-action">
+                            <button class="btn btn-info" @click="addPost">Добавить</button>
+                            <button class="btn" @click="onCloseAddPost">Отмена</button>
+                        </div>
+                    </div>
+                </dialog>
+                <table class="table" v-if="isTable">
+                    <!-- head -->
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Дата</th>
+                        <th>Сахар</th>
+                        <th>Вес</th>
+                        <th>Температура</th>
+                        <th>Пульс</th>
+                        <th>Давление</th>
+                        <th>Кислород в крови</th>
+                        <th>Холестирин</th>
+                        <th>Общее состояние</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- row 1 -->
+                      <tr v-for="item, index in data">
+                        <th>{{index+1}}</th>
+                        <td>{{item.date}}</td>
+                        <td>{{item.blood_sugar}}</td>
+                        <td>{{item.weight}}</td>
+                        <td>{{item.temperature}}</td>
+                        <td>{{item.pulse}}</td>
+                        <td>{{item.pressure}}</td>
+                        <td>{{item.oxygen_level}}</td>
+                        <td>{{item.cholesterol}}</td>
+                        <td>{{item.overall_state}}</td>
+                      </tr>
+                    </tbody>
+                </table>
+                <canvas v-else ref="chart_body" class="w-full flex-grow"></canvas>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

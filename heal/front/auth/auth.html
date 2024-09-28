@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="coffee">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+ 
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="./auth-styles.css">
+    <script src="/utils.js"></script>
+    <script src="./auth-script.js" defer></script>
+    <title>Авторизация</title>
+</head>
+<body>
+    <div id="app" class="flex p-4 gap-2 w-full h-[100dvh]">
+        <main class="flex flex-grow">
+            <div class="card m-auto w-[48rem] flex flex-col gap-2 p-8">
+                <h2 class="text-[4rem] mb-2">Моё здоровье</h2>
+                <div class="tabs tabs-boxed" role="tablist">
+                    <button role="tab" :class="['tab', {'tab-active': !isRegister}]" @click="isRegister = false">Вход</button>
+                    <button role="tab" :class="['tab', {'tab-active': isRegister}]" @click="isRegister = true">Регистрация</button>
+                </div>
+                <div v-if="isRegister === false">
+                    <form class="grid gap-2">
+                        <div>
+                            <label class="input input-bordered flex items-center gap-2 input-lg">
+                                Логин
+                                <input class="grow" placeholder="Введите логин" type="text" id="login" v-model="login">
+                            </label>
+                        </div>
+                        <div>
+                            <label class="input input-bordered flex items-center gap-2 input-lg">
+                                Пароль
+                                <input class="grow" placeholder="Введите пароль" type="password" id="password" v-model="password">
+                            </label>
+                        </div>
+                        <button class="btn btn-secondary btn-lg" type="submit" @click.prevent="loginUser">Войти</button>
+                    </form>
+                </div>
+                <div v-else>
+                    <form class="grid gap-4">
+                        <div>
+                            <label class="input input-bordered flex items-center gap-2 input-lg">
+                                Имя
+                                <input class="grow" placeholder="Введите имя" type="text" id="username" v-model="username">
+                            </label>
+                        </div>
+                        <div>
+                            <label class="input input-bordered flex items-center gap-2 input-lg">
+                                Группа крови
+                                <input class="grow" placeholder="Введите группу крови" type="text" id="blood_group" v-model="blood_group">
+                            </label>
+                        </div>
+                        <div>
+                            <label class="input input-bordered flex items-center gap-2 input-lg">
+                                Рост
+                                <input class="grow" placeholder="Введите рост" type="number" id="height" v-model="height">
+                            </label>
+                        </div>
+                        <div>
+                            <label class="input input-bordered flex items-center gap-2 input-lg">
+                                Логин
+                                <input class="grow" placeholder="Введите логин" type="text" id="login" v-model="login">
+                            </label>
+                        </div>
+                        <div>
+                            <label class="input input-bordered flex items-center gap-2 input-lg">
+                                Пароль
+                                <input class="grow" placeholder="Введите пароль" type="password" id="password" v-model="password">
+                            </label>
+                        </div>
+                        <div>
+                            <label class="input input-bordered flex items-center gap-2 input-lg">
+                                Повторите пароль
+                                <input class="grow" placeholder="Повторите пароль" type="password" id="passwordRepeat" v-model="passwordRepeat">
+                            </label>
+                        </div>
+                        <button class="btn btn-secondary btn-lg" type="submit" @click.prevent="registerUser">Зарегестрироваться</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
